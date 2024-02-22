@@ -704,7 +704,8 @@ Considere-se a seguinte função que verifica se um *array* de inteiros contém 
 
 ::
 
-   bool contains(int array[], int array_size, int value) {
+   bool contains(int array[], int array_size, int value)
+   {
        bool result = false;
        int i = 0;
        while (i < array_size) {
@@ -726,7 +727,8 @@ Conside-se o seguinte programa de teste da função ``contais``.
 
    bool has_five;
 
-   void main() {
+   int main()
+   {
       has_five = contains(numbers, 6, 5);
    }
 
@@ -763,7 +765,8 @@ Esta sub-expressão só será avaliada como falsa se as *strings* forem iguais.
 
 ::
 
-   int strcmp(const char str1[], const char str2[]) {
+   int strcmp(const char str1[], const char str2[])
+   {
       for (int i = 0; str1[i] != 0 && str1[i] == str2[i]; ++i)
          ;
       return str1[i] - str2[i];
@@ -784,7 +787,8 @@ Sem o atributo ``const`` os parâmetros de funções assumem o papel de variáve
 .. code-block:: C
    :linenos:
 
-   int f(const char string[], int i) {
+   int f(const char string[], int i)
+   {
       if (string[i] != '\0')
          string[i] += ' ';
       i += 3;
@@ -804,8 +808,8 @@ As funções não podem conter outras funções mas podem conter variáveis.
 
 Qualquer variável ou função deve ser declarada antes de ser invocada.
 
-Um programa em linguagem C deve ter uma função com o nome **main** que,
-por convenção, é o ponto de entrada na execução do programa.
+O ponto de entrada na execução de um programa é a função **main**
+(em certas circunstâncias pode ter outro nome).
 
 A linguagem C dispõe de uma biblioteca normalizada,
 essencialmente contendo código de funções.
@@ -825,12 +829,14 @@ são criadas durante a execução do bloco e descartadas à saída do bloco.
 
       int x = 10;
 
-      int f(char c) {
+      int f(char c)
+      {
         int g = ' ';
         return c + g;
       }
 
-      void main() {
+      int main()
+      {
          char y = 'a';
          if (x == 2) {
             bool z = true;
@@ -855,7 +861,8 @@ As estáticas são assinaladas com a colocação da palavra **static** antes da 
 
 ::
 
-   void f() {
+   void f()
+   {
        static int i;
        int j;
    }
@@ -890,7 +897,7 @@ de inteiros naturais, em que cada posição recebe a contagem de cada uma das vo
    :linenos:
    :caption: Programa para contar vogais
    :name: letters_main
-   :lines: 3-6, 9-12, 39-43
+   :lines: 3-6, 9-12, 40-45
 
 Na :numref:`letters_main`, nas linhas 1 a 3, definem-se três frases.
 São *arrays* de caracteres,
@@ -902,17 +909,17 @@ e o *array* ``phrase3`` tem a dimensão seis.
 Nas linhas 5 a 7, definem-se três *array* para receberem as contagens. Os elementos
 destes *arrays* são do tipo inteiro natural, representados a 16 *bits* (``uint16_t``).
 
-O símbolo ``SIZE`` que aparece na definição da dimensão destes *arrays*,
+Em linguagem C, as variáveis de localização estática sem valor inicial definido,
+são inicializadas com zero.
+É o caso destes três *arrays*,
+ambos, e todas as suas posições, são inicializadas com o valor zero.
+
+O símbolo ``SIZE``, que aparece na definição da dimensão destes *arrays*,
 é uma macro definida de seguinte forma:
 
 .. literalinclude:: ../code/letters.c
    :language: c
    :lines: 7
-
-Em linguagem C, as variáveis de localização estática sem valor inicial definido,
-são inicializadas com zero.
-É o caso destes três *arrays*,
-ambos, e todas as suas posições, são inicializadas com o valor zero.
 
 Nas linhas 10 a 12, invoca-se a função ``histogram_vowel`` para cada uma das frases.
 Na linha 10, é invocada com o *array* ``phrase1`` como primeiro argumento,
@@ -923,7 +930,7 @@ o valor 18 como número máximo da caracteres a processar e por último o *array
    :linenos:
    :caption: Definição da função ``histogram_vowel``
    :name: histogram_vowel
-   :lines: 30-38
+   :lines: 31-38
 
 O corpo principal da função ``histogram_vowel`` consiste em iterar sobre as posições do array ``phrase``,
 a começar na primeira posição -- ``uint16_t i = 0`` --
@@ -980,7 +987,7 @@ Poder-se-ão alvitrar alguns efeitos:
    :linenos:
    :caption: Definição da função ``find_vowel``
    :name: find_vowel
-   :lines: 12-28
+   :lines: 13-29
 
 Na :numref:`find_vowel` a função ``find_vowel`` baseia-se na utilização de uma
 estrututa *switch/case*.

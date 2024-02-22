@@ -10,7 +10,8 @@ uint16_t occurrences1[SIZE];
 uint16_t occurrences2[SIZE];
 uint16_t occurrences3[SIZE];
 
-int16_t find_vowel(char letter) {
+int16_t find_vowel(char letter)
+{
 	switch (letter) {
 		case 'a':
 			return 0;
@@ -36,7 +37,8 @@ void histogram_vowel(char phrase[], uint16_t max_letters, uint16_t occurrences[5
 	}
 }
 
-int main() {
+int main(void)
+{
 	histogram_vowel(phrase1, 18, occurrences1);
 	histogram_vowel(phrase2, 15, occurrences2);
 	histogram_vowel(phrase3, 5, occurrences3);
