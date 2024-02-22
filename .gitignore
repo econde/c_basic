@@ -1,0 +1,7 @@
+*.lst
+*.hex
+_build
+stuff
+a.out
+.vscode
+
