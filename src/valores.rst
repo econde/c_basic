@@ -4,24 +4,37 @@ Tipos básicos
 Inteiros
 --------
 
-Os valores inteiros são representados, ao nível da máquina, em binário, no sistema de significância posicional.
+Os valores inteiros são representados, ao nível da máquina, em binário,
+no sistema de significância posicional.
 O conjunto dos números naturais têm uma representação direta
 e o conjunto de números relativos são codificados em código dos complementos.
 Na :numref:`tipos_c_kotlin` apresentam-se os identificadores de tipo,
 assim como as dimensões de representação nas linguagens Kotlin e C, medida em *bytes*.
 
+As palavras ``signed`` e ``unsigned`` atuam como "modificadores de sinal".
+``signed`` significa que o domínio de valores pertence ao conjunto dos números relativos
+e ``unsigned`` significa que o domínio pertence ao conjunto dos números naturais.
+
+Estes modificadores podem ser omitidos e as palavras ``char`` ou ``int`` aparecer isoladas.
+Nesse caso é definido previamente se ``char`` é equivalente a ``signed char``
+ou a ``unsigned char``. O mesmo acontece para o ``int``.
+
+As palavras ``short`` e ``long`` atuam como modificadores de dimensão no tipo ``int``,
+produzindo representações com menor ou maior número de *bits*, respetivamente.
+Sintaticamente estas palavras podem aparecem isoladas (sem ``int`` à frente)
+com o mesmo significado.
+
+   * ``short`` é equivalente a ``short int``
+   * ``long`` é equivalente a ``long int``
+
 Como a linguagem C não define dimensões concretas para
-os tipos numéricos ``char``, ``int``, ``short int`` e ``long int``,
-foi definido, ao nível da `biblioteca normalizada <https://en.cppreference.com/w/c/types/integer>`_,
+os tipos numéricos ``char``, ``int``, ``short`` e ``long``, foi definido,
+ao nível da `biblioteca normalizada <https://en.cppreference.com/w/c/types/integer>`_,
 a existência dos tipos ``intXX_t`` sendo ``XX``
 o número de *bits* dessa representação concreta.
 A variante ``uintXX_t`` representa valores no conjunto dos números naturais
 e a variante ``intXX_t`` representa valores no conjunto dos números relativos.
 
-As palavras ``short`` e ``long`` atuam como modificadores de dimensão no tipo ``int``,
-produzindo representações com menor ou maior número de *bits*, respetivamente.
-Sintaticamente estas palvras podem aparecem isoladas (sem ``int`` à frente)
-com o mesmo significado.
 
 
 .. table:: Tipos numéricos da linguagem C e Kotlin
@@ -198,7 +211,7 @@ Exemplos de definição:
 
    ``int fruit[100];``    *Array* de cem valores inteiros.
 
-O acesso aos elementos do *array* realiza-se apenas através do operador indexação **[]**.
+O acesso aos elementos do *array* realiza-se através do operador indexação **[]**.
 Os índices vão de zero -- primeira posição -- à dimensão menos um -- última posição.
 
 No exemplo anterior, as posições do *array* ``fruit`` vão de 0 a 99.
@@ -207,7 +220,7 @@ Exemplos de acesso:
 
    ``fruit[0] = 34;`` A primeira posição do *array* ``fruit`` é afetada com trinta e quatro.
 
-   ``c[9] = 'f';`` A última posição do *array* ``c`` é afetado com o código numérico da letra 'f'.
+   ``c[9] = 'f';`` A última posição do *array* ``c`` é afetada com o código numérico da letra 'f'.
 
 Em linguagem C não se pode afetar um *array*
 com a totalidade do conteúdo de outro *array* numa operação de afetação.
@@ -224,7 +237,7 @@ Considerando: ::
    a[1] = b[1];
    a[2] = b[2];
 
-é válido, embora não seja o código adequado para expressar a cópia um *array* extenso.
+é válido. (Embora não seja o código adequado para expressar a cópia de um *array* extenso.)
 
 Definição de *arrays* com inicialização
 .......................................
@@ -388,8 +401,8 @@ Operações *bit-a-bit* (*bitwise*)
    ======================== ====== =======
 
 No deslocamento para a direita, o *bit* de maior peso
-mantém o valor se estiver a operar sobre um tipo com sinal
-ou recebe zero se estiver a operar sobre um tipo sem sinal.
+mantém o valor se estiver a operar um tipo com sinal
+ou recebe zero se estiver a operar um tipo sem sinal.
 
 Exemplos:
 
@@ -432,7 +445,7 @@ Operações booleanas
    ====== =========    ====== =========   =====  =======
 
 A avaliação de expressões booleanas realiza-se da esquerda para a direita.
-Se na avaliação uma sub-expressão o resultado for igual ao elemento absorvente,
+Se na avaliação de uma sub-expressão o resultado for igual ao elemento absorvente,
 as restantes sub-expressões já não serão avaliadas (*lazzy evaluation*).
 
 Os operandos naturais destes operadores são valores booleanos.
@@ -622,7 +635,8 @@ ou quebar a sequência de execução do **switch**.
 Exemplo: dada a indicação do mês, na forma de um número de um a doze,
 obter o número de dias do mês.
 
-::
+.. code-block:: C
+   :linenos:
 
    int month;
    int days;
@@ -641,11 +655,16 @@ obter o número de dias do mês.
          days = 31;
    }
 
+Porquê a colocação de ``break`` nas linhas 7 e 13? Porque, por definição,
+a construção ``switch`` executa em sequência, até ao final (fechar **}**)
+todo o código a jusante da entrada ``case`` selecionada.
 
 continue
 --------
 
-É utilizado num bloco while, do while ou for. Provoca o avanço para a próxima iteração.
+É utilizado num bloco while, do while ou for.
+Provoca o avanço para a próxima iteração,
+sem executar o código até ao final do bloco.
 
 Funções
 =======
@@ -692,6 +711,13 @@ A lista de parâmetros também pode ser omitida.
 Neste caso o significado é que a função não recebe argumentos.
 (Nem sempre foi assim, em versões antigas tinha outro significado.)
 
+Pode colocar-se ``void`` no lugar da lista de parâmetros
+para explicitar que a função não recebe argumentos.
+
+::
+
+   int delay_5_seconds(void);
+   
 Relativamente a outras linguagens de programação, na linguagem C:
    * a passagem de argumentos é posicional -- não existe passagem de argumentos nomeados;
    * não existe sobrecarga de funções -- não se podem redefinir funções com o mesmo nome;
@@ -732,7 +758,7 @@ Conside-se o seguinte programa de teste da função ``contais``.
       has_five = contains(numbers, 6, 5);
    }
 
-Na declaração de um argumento de função do tipo *array* não se indica a dimensão do *array*.
+Na declaração de um parâmetro de função do tipo *array* não se indica a dimensão do *array*.
 É o caso de ``int array[]`` em ``contains``.
 
 ::
@@ -753,14 +779,14 @@ Algo como ``array.length`` não existe em linguagem C.
 Essa é a justificação para a existência do segundo parâmetro ``array_size``
 na função ``contains``.
 
-Na linguagem C, um *array* como parâmetro é sempre acompanhado de algum artifício
-que permita operar o array dentro dos seus limites.
+Na linguagem C, um *array* como parâmetro é sempre acompanhado de outro parâmetro
+ou de algum artifício que permita operar o array dentro dos seus limites.
 
 No caso das funções que manipulam *strings*, que são suportadas por *arrays* de caracteres,
-a informação sobre a dimensão está no termindador da *string* -- valor zero após o último caractere da *string*.
+a informação de dimensão está no termindador da *string* -- valor zero após o último caractere da *string*.
 
 Na função ``strcmp`` a sub-expressão ``str1[i] != 0``
-serve para não se ultrapassar os limites dos *arras*.
+serve para não se ultrapassar os limites dos *arrays*.
 Esta sub-expressão só será avaliada como falsa se as *strings* forem iguais.
 
 ::
@@ -773,7 +799,7 @@ Esta sub-expressão só será avaliada como falsa se as *strings* forem iguais.
    }
 
 O método de utilizar um valor marcador para indicar o final do *array*
-só pode ser aplicado se o marcador não for um valor possível de dados no *array*.
+só pode ser aplicado se o marcador não for um valor de dados possível.
 
 Parâmetros constantes
 ---------------------
@@ -794,10 +820,10 @@ Sem o atributo ``const`` os parâmetros de funções assumem o papel de variáve
       i += 3;
    }
 
-No exemplo, a tentativa de alteração do conteúdo de ``string`` na linha 3
+No exemplo, a tentativa de alteração do conteúdo de ``string`` na linha 4
 é assinalada com erro pelo compilador.
 
-A instrução da linha 4 adiciona 3 ao parâmetro ``i``, como se fosse uma variável comum.
+A instrução da linha 5 adiciona 3 ao parâmetro ``i``, como se fosse uma variável comum.
 
 Estrutura de um programa em C
 =============================
@@ -808,10 +834,10 @@ As funções não podem conter outras funções mas podem conter variáveis.
 
 Qualquer variável ou função deve ser declarada antes de ser invocada.
 
-O ponto de entrada na execução de um programa é a função **main**
+O ponto de entrada de execução num programa é a função **main**
 (em certas circunstâncias pode ter outro nome).
 
-A linguagem C dispõe de uma biblioteca normalizada,
+A linguagem C dispõe de uma `biblioteca normalizada <https://en.cppreference.com/w/c/types/integer>`_,
 essencialmente contendo código de funções.
 
 Variáveis
@@ -845,9 +871,9 @@ são criadas durante a execução do bloco e descartadas à saída do bloco.
       }
 
 No exemplo, a variável ``x`` é global, ``y`` e ``z`` são  locais.
-A variável ``z`` só tem existência enquanto o processamentos estiver a decorrer
-entre as linhas 11 e 12.
-A variável y tem existência enquanto o processamento estiver a decorrer entre as linhas 9 e 13.
+A variável ``z`` só tem existência enquanto o processamento estiver a decorrer
+entre as linhas 12 e 13.
+A variável y tem existência enquanto o processamento estiver a decorrer entre as linhas 10 e 16.
 
 As variáveis são também classificadas como variáveis estáticas ou automáticas.
 As automáticas são as variáveis locais que são criadas e eliminadas à medida que
@@ -856,7 +882,7 @@ As variáveis estáticas são aquelas que estão permanentemente alocadas em mem
 -- têm um tempo de vida igual ao do programa.
 É o caso das variáveis globais.
 
-As variáveis locais há dos dois tipo, as estáticas e as automáticas.
+As variáveis locais, há dos dois tipos, as estáticas e as automáticas.
 As estáticas são assinaladas com a colocação da palavra **static** antes da definição.
 
 ::
@@ -867,11 +893,11 @@ As estáticas são assinaladas com a colocação da palavra **static** antes da 
        int j;
    }
 
-No exemplo acima, i é uma variável estática tem uma localização em memória
-permanenete e exclusiva,
-é criada no arranque do programa e é inicializada com zero.
-A variável j, é criada e eliminada à entrada e à saída de função f, respetivamente.
-O seu valor inicial é indefinido.
+No exemplo acima, **i** é uma variável estática tem uma localização em memória
+permanenete e exclusiva, como as variáveis globais.
+É criada no arranque do programa, inicializada com zero.
+A variável **j**, é criada e eliminada à entrada e à saída da função **f**,
+com valor inicial indefinido.
 
 Exemplo de programa
 -------------------
@@ -883,7 +909,7 @@ Esta função tem a seguinte declaração:
 
 .. literalinclude:: ../code/letters.c
    :language: c
-   :lines: 30
+   :lines: 31
 
 O primeiro parâmetro -- ``phrase`` -- representa um *array* de caracteres
 com a frase a processar.
@@ -909,7 +935,7 @@ e o *array* ``phrase3`` tem a dimensão seis.
 Nas linhas 5 a 7, definem-se três *array* para receberem as contagens. Os elementos
 destes *arrays* são do tipo inteiro natural, representados a 16 *bits* (``uint16_t``).
 
-Em linguagem C, as variáveis de localização estática sem valor inicial definido,
+Em linguagem C, as variáveis de localização estática sem valor inicial explícito,
 são inicializadas com zero.
 É o caso destes três *arrays*,
 ambos, e todas as suas posições, são inicializadas com o valor zero.
@@ -921,8 +947,8 @@ O símbolo ``SIZE``, que aparece na definição da dimensão destes *arrays*,
    :language: c
    :lines: 7
 
-Nas linhas 10 a 12, invoca-se a função ``histogram_vowel`` para cada uma das frases.
-Na linha 10, é invocada com o *array* ``phrase1`` como primeiro argumento,
+Nas linhas 11 a 13, invoca-se a função ``histogram_vowel`` para cada uma das frases.
+Na linha 11, é invocada com o *array* ``phrase1`` como primeiro argumento,
 o valor 18 como número máximo da caracteres a processar e por último o *array* ``ocurrencies1``.
 
 .. literalinclude:: ../code/letters.c
@@ -935,7 +961,7 @@ o valor 18 como número máximo da caracteres a processar e por último o *array
 O corpo principal da função ``histogram_vowel`` consiste em iterar sobre as posições do array ``phrase``,
 a começar na primeira posição -- ``uint16_t i = 0`` --
 até se encontrar o terminador da *string* -- ``phrase[i] != '\0'`` --
-ou se ter atingido o máximo de iterações -- ``i < max_letters``.
+ou se atingir o máximo de iterações -- ``i < max_letters``.
 
 Em cada iteração, é invocada a função ``find_vowel``,
 que recebe o código de uma letra e a classifica.
@@ -945,9 +971,13 @@ Se a letra for uma vogal, é retornado o valor 0 para \'a\', 1 para \'e\'
 e assim sucessivamente até, 4 para \'u\'.
 Se a letra não for uma vogal, é retornado -1.
 
+.. literalinclude:: ../code/letters.c
+   :language: c
+   :lines: 15
+   
 A invocação de ``find_vowel`` está embebida na expressão de afetação
 ``idx = find_vowel(phrase[i])``, cujo valor é o valor retornado por ``find_vowel``.
-Esse valor é depois comparado com a constante literal -1 (linha 5).
+Esse valor é afetado a ``idx`` e depois comparado com a constante literal -1 (linha 5).
 Se for diferente é contabilizada a ocorrência de uma vogal (linha 6).
 
 A indicação [5] na declaração do parâmetro ``uint16_t occurrences[5]`` é meramente ilustrativa.
@@ -960,18 +990,18 @@ como ``phrase`` ou ``occurrences``,
 
 A sub-expressão ``ocurrencies[idx]``
 dá acesso direto à posição do *array* utilizado como argumento de ``histogram_vowel``.
-(na invocação da linha 10 na :numref:`letters_main`, o *array* ``occurrencies1``).
+Na invocação da linha 10 na :numref:`letters_main`, é o *array* ``occurrencies1``.
 O valor de ``idx`` situa-se entre 0 e 4.
 O *array* utilizado como argumento deve ter pelo menos 5 posições.
 
 Na compilação de uma função,
 o compilador da linguagem C não realiza qualquer verificação
 da ultrapassagem dos limites de um *array* passado em parâmetro,
-nem ativa qualquer mecanismo de verificação em execução.
+nem ativa qualquer mecanismo para verificação em execução.
 Na hipótese de o *array* passado como argumento em ``occurrences``
 ter uma dimensão inferior a 5,
 uma escrita na posição 4 consumaria um **acesso inválido** à memória,
-com efeito imprevissível.
+com efeito imprevisível.
 
 Poder-se-ão alvitrar alguns efeitos:
    * o endereço de memória acedido é viável e não está atribuido a outra variável
@@ -999,6 +1029,6 @@ Conforme o valor numérico em ``letter``, a construção *switch* realiza um sal
 para a linha *case* com valor numérico igual. No caso do valor numérico de ``letter``
 não estar contemplado em nenhum *case* o salto dá-se para *default*.
 Em qualquer caso é executado imediatamente o retorno da função
-com um valor de classificação associado a *return*.
+com o valor de classificação como argumento de ``return``.
 
 **Código completo:** :download:`letters.c<../code/letters.c>`
