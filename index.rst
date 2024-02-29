@@ -13,7 +13,17 @@ Introdução à linguagem C
    :glob:
 
    src/introducao.rst
-   src/valores.rst
+   src/tipos.rst
+   src/literais.rst
+   src/variaveis.rst
+   src/strings.rst
+   src/constantes.rst
+   src/conversao.rst
+   src/macros.rst
+   src/expressoes.rst
+   src/controlo.rst
+   src/funcoes.rst
+   src/programa.rst
    src/referencias.rst
 
 * :ref:`search`

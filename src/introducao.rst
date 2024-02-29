@@ -4,7 +4,7 @@ Introdução
    Nestas notas pretende-se resumir o essencial da linguagem C
    que permita utilizá-la como auxiliar no ensino da programação em linguagem *assembly*.
 
-   Elementos da linguagem aqui abordados:
+   Elementos da linguagem abordados:
 
    * tipos de dados básicos para representação de caracteres, números inteiros e booleanos;
    * definição de constantes e variáveis simples e *arrays*;
